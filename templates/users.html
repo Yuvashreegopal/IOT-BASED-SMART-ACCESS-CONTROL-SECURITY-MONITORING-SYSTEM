@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+
+        table {
+            width: 600px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #334155;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #1e293b;
+        }
+
+        tr:nth-child(even) {
+            background: #1e293b;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 8px 12px;
+            background: #38bdf8;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        a {
+            color: #f87171;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>👤 User Management</h1>
+
+    <h3>➕ Add New User</h3>
+
+    <form method="POST" action="/add-user">
+        <input type="text" name="name" placeholder="User Name" required>
+        <input type="text" name="uid" placeholder="RFID UID (e.g. B4 1E 9E A9)" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <h3>📋 Registered Users</h3>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>UID</th>
+            <th>Action</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+            <td>
+                <a href="/delete-user/{{ user[0] }}">❌ Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><br>
+
+    <a href="/dashboard">⬅ Back to Dashboard</a>
+
+</body>
+</html>

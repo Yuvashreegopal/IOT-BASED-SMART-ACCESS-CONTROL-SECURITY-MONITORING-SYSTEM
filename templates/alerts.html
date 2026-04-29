@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Alerts</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #ef4444;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #020617;
+            color: #f87171;
+            padding: 12px;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        tr:hover {
+            background: #334155;
+        }
+
+        .msg {
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .time {
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🚨 Security Alerts</h1>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>UID</th>
+        <th>Message</th>
+        <th>Time</th>
+    </tr>
+
+    {% for alert in alerts %}
+    <tr>
+        <td>{{ alert[0] }}</td>  <!-- Name -->
+        <td>{{ alert[1] }}</td>  <!-- UID -->
+        <td class="msg">{{ alert[2] }}</td> <!-- Message -->
+        <td class="time">{{ alert[3] }}</td> <!-- Time -->
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+<a href="/dashboard">⬅ Back to Dashboard</a>
+
+</body>
+</html>

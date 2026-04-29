@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IoT Access Control Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: white;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        /* Glass Card */
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 25px;
+            width: 400px;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.3);
+        }
+
+        h2 {
+            color: #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        .status-box {
+            margin-top: 15px;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .status-value {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Navigation Buttons */
+        .nav {
+            margin-top: 30px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            padding: 10px 18px;
+            border-radius: 8px;
+            margin-right: 10px;
+            font-size: 14px;
+            transition: 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+        }
+
+        /* Status Colors */
+        .granted {
+            color: #22c55e;
+        }
+
+        .denied {
+            color: #ef4444;
+        }
+
+        .locked {
+            color: #facc15;
+        }
+
+        /* Pulse Animation */
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>🚀 IoT Access Control</h1>
+
+    <div class="card">
+        <h2>🚪 Door Status</h2>
+
+        <div id="doorStatus" class="status-box pulse">
+            Loading...
+        </div>
+    </div>
+
+    <div class="nav">
+        <a href="/logs">📜 View Logs</a>
+        <a href="/alerts">🚨 View Alerts</a>
+        <a href="/users">👤 Manage Users</a>
+    </div>
+
+    <script>
+        async function fetchDoorStatus() {
+
+            const res = await fetch('/api/door-status');
+            const data = await res.json();
+
+            let statusClass = "locked";
+            if (data.status === "GRANTED") statusClass = "granted";
+            if (data.status === "DENIED") statusClass = "denied";
+
+            document.getElementById("doorStatus").classList.remove("pulse");
+
+            document.getElementById("doorStatus").innerHTML = `
+                <div>
+                    <b>Status:</b><br>
+                    <span class="status-value ${statusClass}">
+                        ${data.status || "LOCKED"}
+                    </span>
+                    <br><br>
+
+                    <b>User:</b> ${data.user || "None"} <br>
+                    <b>Role:</b> ${data.role || "N/A"} <br>
+                    <b>UID:</b> ${data.last_uid || "None"} <br>
+                    <b>Time:</b> ${data.time || "N/A"}
+                </div>
+            `;
+        }
+
+        setInterval(fetchDoorStatus, 2000);
+        fetchDoorStatus();
+    </script>
+
+</body>
+</html>
